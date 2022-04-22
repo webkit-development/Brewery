@@ -1,6 +1,7 @@
 package com.webkit.brewery.web.controller;
 
 
+import com.webkit.brewery.services.BeerService;
 import com.webkit.brewery.web.model.BeerDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,14 @@ import java.util.UUID;
 @RequestMapping("/api/v1/beer")
 @RestController
 public class BeerController {
+    private final BeerService beerService;
+
+    public BeerController(BeerService beerService) {
+        this.beerService = beerService;
+    }
+
     @GetMapping({"/{beerId}"})
-    public ResponseEntity<BeerDto> getBeer(@PathVariable UUID beerId) {
-        return new ResponseEntity<>(BeerDto.builder().build(),  HttpStatus.OK);
+    public ResponseEntity<BeerDto> getBeer(@PathVariable("beerId") UUID beerId) {
+        return new ResponseEntity<>(beerService.getBeerById(beerId),  HttpStatus.OK);
     }
 }
